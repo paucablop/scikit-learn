@@ -691,8 +691,8 @@ class PLSRegression(_PLS):
             y_centered /= y_std
 
         # Total variance in centered data
-        X_total_var = np.var(X_centered, axis=0).sum()
-        y_total_var = np.var(y_centered, axis=0).sum()
+        X_total_var = np.var(X_centered, axis=0, ddof=1).sum()
+        y_total_var = np.var(y_centered, axis=0, ddof=1).sum()
         has_x_variance = not np.isclose(X_total_var, 0.0)
         has_y_variance = not np.isclose(y_total_var, 0.0)
 
@@ -715,16 +715,16 @@ class PLSRegression(_PLS):
             y_hat = t_a @ q_a.T
 
             # Variance of current residual before deflation
-            X_var_before = np.var(X_current, axis=0).sum()
-            y_var_before = np.var(y_current, axis=0).sum()
+            X_var_before = np.var(X_current, axis=0, ddof=1.0).sum()
+            y_var_before = np.var(y_current, axis=0, ddof=1.0).sum()
 
             # Deflate X and y
             X_current -= X_hat
             y_current -= y_hat
 
             # Variance of residual after deflation
-            X_var_after = np.var(X_current, axis=0).sum()
-            y_var_after = np.var(y_current, axis=0).sum()
+            X_var_after = np.var(X_current, axis=0, ddof=1.0).sum()
+            y_var_after = np.var(y_current, axis=0, ddof=1.0).sum()
 
             # Store variance explained as ratio of total variance
             if has_x_variance:
